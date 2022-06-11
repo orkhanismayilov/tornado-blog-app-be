@@ -1,10 +1,15 @@
-const getFile = require('../middlewares/file.middleware')('image');
-const Post = require('../models/post.model');
+import chalk from 'chalk';
+import { RequestHandler } from 'express';
+import fs from 'fs';
+import path from 'path';
 
-class PostsController {
+import { getFile } from '../middlewares';
+import { PostModel } from '../models';
 
-  async getPosts(req, res) {
-    const query = Post.find();
+export class PostsController {
+
+  static getPosts: RequestHandler = async (req, res) => {
+    const query = PostModel.find();
     const { limit, page } = req.query;
 
     if (limit && page) {
@@ -12,7 +17,7 @@ class PostsController {
     }
 
     const fetchedPosts = await query.sort({ createdAt: 'desc' });
-    const count = await Post.count();
+    const count = await PostModel.count();
 
     res.json({
       data: fetchedPosts,
@@ -20,13 +25,13 @@ class PostsController {
     });
   };
 
-  async getPost(req, res) {
-    const post = await Post.findById(req.params.id);
+  static getPost: RequestHandler = async (req, res) => {
+    const post = await PostModel.findById(req.params.id);
     res.json(post);
   };
 
-  async createPost(req, res) {
-    getFile(req, res, async (err) => {
+  static createPost: RequestHandler = async (req, res) => {
+    getFile('image')(req, res, async (err) => {
       if (err instanceof Error) {
         return res.status(400).json({ message: err.message });
       }
@@ -39,7 +44,7 @@ class PostsController {
         return res.status(400).json({ message: 'Invalid post data' });
       }
 
-      const post = new Post({
+      const post = new PostModel({
         title,
         content,
         author,
@@ -50,8 +55,8 @@ class PostsController {
     });
   };
 
-  async updatePost(req, res) {
-    getFile(req, res, async (err) => {
+  static updatePost: RequestHandler = async (req, res) => {
+    getFile('image')(req, res, async (err) => {
       if (err instanceof Error) {
         return res.status(400).json({ message: err.message });
       }
@@ -68,7 +73,7 @@ class PostsController {
         imagePath = `/images/${req.file.filename}`;
       }
 
-      const post = await Post.findById(req.params.id);
+      const post = await PostModel.findById(req.params.id);
       if (post.author !== req.userData.userId) {
         return res.status(403).json({ message: 'You do not have permisson to edit this post' });
       }
@@ -82,15 +87,18 @@ class PostsController {
     });
   };
 
-  async deletePost(req, res) {
-    const post = await Post.findById(req.params.id);
+  static deletePost: RequestHandler = async (req, res) => {
+    const post = await PostModel.findById(req.params.id);
     if (post.author !== req.userData.userId) {
-      return req.status(403).json({ message: 'You do not have permission to delete this post' });
+      return res.status(403).json({ message: 'You do not have permission to delete this post' });
     }
 
-    res.status(200);
+    fs.rm(path.join(__dirname, '../../src/public', post.imagePath), (err) => {
+      if (err) console.warn(chalk.redBright(`Cannot delete file: ${post.imagePath}\n${err.message}`));
+    });
+
+    await post.delete();
+    res.status(200).json(null);
   };
 
 }
-
-module.exports = new PostsController();

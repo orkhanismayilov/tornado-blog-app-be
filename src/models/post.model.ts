@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
-const uuid = require('uuid').v4;
-const Schema = mongoose.Schema;
+import { model, Schema } from 'mongoose';
+import { Post } from '../interfaces';
+import { v4 as uuid } from 'uuid';
 
-const postSchema = new Schema(
+const postSchema = new Schema<Post>(
   {
     _id: { type: String, default: uuid },
     title: { type: String, required: true },
@@ -28,6 +28,6 @@ const postSchema = new Schema(
   },
 );
 
-postSchema.virtual('id').get(() => this._id);
+postSchema.virtual('id').get(function () { return this._id; });
 
-module.exports = mongoose.model('Post', postSchema);
+export const PostModel = model('Post', postSchema);

@@ -1,19 +1,20 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const path = require('path');
-const authRoutes = require('./routes/auth.route');
-const postsRoutes = require('./routes/posts.route');
-const { MONGO_DB_CONNECTION_STRING } = require('./config');
+import chalk from 'chalk';
+import express from 'express';
+import mongoose from 'mongoose';
+import path from 'path';
+
+import { MONGO_DB_CONNECTION_STRING } from './config';
+import { authRoutes, postsRoutes } from './routes';
 
 mongoose.connect(MONGO_DB_CONNECTION_STRING)
-  .then(() => console.log('Connected to db'))
-  .catch(() => console.error('Connection error!'));
+  .then(() => console.log(chalk.greenBright('Connected to MongoDB')))
+  .catch(() => console.warn(chalk.redBright('Connection error!')));
 
-const app = express();
+export const app = express();
 
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: false })); // for parsing application/x-www-form-urlencoded
-app.use('/images', express.static(path.join('public/images'), { maxAge: '1d' }));
+app.use('/images', express.static(path.join('src/public/images'), { maxAge: '1d' }));
 
 app.use((req, res, next) => {
   const protocol = req.protocol;
@@ -28,5 +29,3 @@ app.use((req, res, next) => {
 
 app.use('/api/auth', authRoutes);
 app.use('/api/posts', postsRoutes);
-
-module.exports = app;

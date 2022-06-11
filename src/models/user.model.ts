@@ -1,9 +1,10 @@
-const mongoose = require('mongoose');
-const uuid = require('uuid').v4;
-const uniqueValidator = require('mongoose-unique-validator');
-const Schema = mongoose.Schema;
+import { model, Schema } from 'mongoose';
+import uniqueValidator from 'mongoose-unique-validator';
+import { v4 as uuid } from 'uuid';
 
-const userSchema = new Schema(
+import { User } from '../interfaces';
+
+const userSchema = new Schema<User>(
   {
     _id: { type: String, default: uuid },
     firstName: { type: String, required: true },
@@ -24,7 +25,7 @@ const userSchema = new Schema(
   },
 );
 
-userSchema.virtual('id').get(() => this._id);
+userSchema.virtual('id').get(function () { return this._id; });
 userSchema.plugin(uniqueValidator, { message: 'User with email {VALUE} already exists!' });
 
-module.exports = mongoose.model('User', userSchema);
+export const UserModel = model('User', userSchema);

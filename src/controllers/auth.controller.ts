@@ -1,18 +1,20 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const { JWT_SECRET_KEY } = require('../config');
-const User = require('../models/user.model');
+import bcrypt from 'bcrypt';
+import { RequestHandler } from 'express';
+import jwt from 'jsonwebtoken';
 
-class AuthController {
+import { JWT_SECRET_KEY } from '../config';
+import { UserModel } from '../models';
 
-  async signup(req, res) {
+export class AuthController {
+
+  static signup: RequestHandler = async (req, res) => {
     const { firstName, lastName, email, password } = req.body;
 
     if (!(firstName && lastName && email && password)) {
-      return res.status('400').json({ message: 'Invalid user data' });
+      return res.status(400).json({ message: 'Invalid user data' });
     }
 
-    const user = new User({
+    const user = new UserModel({
       firstName,
       lastName,
       email,
@@ -28,14 +30,14 @@ class AuthController {
     }
   };
 
-  async login(req, res) {
+  static login: RequestHandler = async (req, res) => {
     const { email, password } = req.body;
 
     if (!(email && password)) {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
 
-    const user = await User.findOne({ email });
+    const user = await UserModel.findOne({ email });
     if (!user) {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
@@ -59,5 +61,3 @@ class AuthController {
   };
 
 }
-
-module.exports = new AuthController();

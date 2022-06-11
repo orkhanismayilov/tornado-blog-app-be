@@ -1,8 +1,8 @@
-const http = require('http');
-const debug = require('debug')('node-angular');
-const app = require('./app');
+import chalk from 'chalk';
 
-const normalizePort = val => {
+import { app } from './app';
+
+const normalizePort = (val: string) => {
   var port = parseInt(val, 10);
 
   if (isNaN(port)) {
@@ -18,7 +18,7 @@ const normalizePort = val => {
   return false;
 };
 
-const onError = error => {
+const onError = (error: any) => {
   if (error.syscall !== "listen") {
     throw error;
   }
@@ -35,17 +35,9 @@ const onError = error => {
   }
 };
 
-const onListening = () => {
-  const bind = typeof port === "string" ? "pipe " + port : "port " + port;
-  debug("Listening on " + bind);
-};
+const port = normalizePort(process.env.PORT || '3000');
 
-const hostname = 'localhost';
-const port = normalizePort(process.env.PORT || 3000);
-
-app.set('port', port);
-const server = http.createServer(app);
-
-server.on('error', onError);
-server.on('listening', onListening);
-server.listen(port, hostname);
+app.listen(port, () => {
+  console.log(chalk.gray('================================================='));
+  console.log(chalk.greenBright(`Server started at http://localhost:${port}`));
+});
