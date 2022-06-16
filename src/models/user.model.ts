@@ -33,6 +33,9 @@ const userSchema = new Schema<User>(
 userSchema.virtual('id').get(function () {
   return this._id;
 });
+userSchema.virtual('fullName').get(function () {
+  return `${this.firstName.charAt(0)}. ${this.lastName}`;
+});
 userSchema.plugin(uniqueValidator, {
   message: 'User with email {VALUE} already exists!',
 });

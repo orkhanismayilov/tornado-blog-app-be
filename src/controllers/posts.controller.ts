@@ -15,7 +15,9 @@ export class PostsController {
       query.skip(+limit * (+page - 1)).limit(+limit);
     }
 
-    const fetchedPosts = await query.sort({ createdAt: 'desc' });
+    const fetchedPosts = await query
+      .sort({ createdAt: 'desc' })
+      .populate('author');
     const count = await PostModel.count();
 
     res.json({
@@ -25,7 +27,7 @@ export class PostsController {
   };
 
   static getPost: RequestHandler = async (req, res) => {
-    const post = await PostModel.findById(req.params.id);
+    const post = await PostModel.findById(req.params.id).populate('author');
     res.json(post);
   };
 
@@ -35,7 +37,7 @@ export class PostsController {
         return res.status(400).json({ message: err.message });
       }
 
-      const { title, content } = req.body;
+      const { title, content }: { title: string; content: string } = req.body;
       const file = req.file;
       const author = req.userData.userId;
 
@@ -60,8 +62,8 @@ export class PostsController {
         return res.status(400).json({ message: err.message });
       }
 
-      const { title, content } = req.body;
-      let { imagePath } = req.body;
+      const { title, content }: { title: string; content: string } = req.body;
+      let { imagePath }: { imagePath: string } = req.body;
       const file = req.file;
 
       if (!(title && content && (imagePath || file))) {
@@ -81,7 +83,9 @@ export class PostsController {
 
       post.title = title;
       post.content = content;
-      post.imagePath = imagePath;
+      post.imagePath = imagePath.includes(process.env.FULL_URL)
+        ? post.imagePath
+        : imagePath;
       await post.save();
 
       res.json(null);
