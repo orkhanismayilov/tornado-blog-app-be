@@ -6,7 +6,6 @@ import { JWT_SECRET_KEY } from '../config';
 import { UserModel } from '../models';
 
 export class AuthController {
-
   static signup: RequestHandler = async (req, res) => {
     const { firstName, lastName, email, password } = req.body;
 
@@ -59,5 +58,4 @@ export class AuthController {
       expiresIn: 3600,
     });
   };
-
 }

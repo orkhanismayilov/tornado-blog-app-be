@@ -9,7 +9,9 @@ const MIME_TYPE_MAP = new Map([
 const storage = multer.diskStorage({
   destination: (_req, file, callback) => {
     const isValid = MIME_TYPE_MAP.has(file.mimetype);
-    const error = !isValid ? new Error('Invalid file type! Only png, jpg, jpeg is allowed.') : null;
+    const error = !isValid
+      ? new Error('Invalid file type! Only png, jpg, jpeg is allowed.')
+      : null;
     callback(error, 'src/public/images');
   },
   filename: (_req, file, callback) => {
@@ -19,4 +21,5 @@ const storage = multer.diskStorage({
   },
 });
 
-export const getFile = (filePath: string) => multer({ storage }).single(filePath);
+export const getFile = (filePath: string) =>
+  multer({ storage }).single(filePath);

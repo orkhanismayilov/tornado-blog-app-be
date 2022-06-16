@@ -18,20 +18,12 @@ postsRoutes.get('/:id', PostsController.getPost);
 /**
  * Add Post
  */
-postsRoutes.post(
-  '',
-  authorize,
-  PostsController.createPost,
-);
+postsRoutes.post('', authorize, PostsController.createPost);
 
 /**
  * Patch Post
  */
-postsRoutes.patch(
-  '/:id',
-  authorize,
-  PostsController.updatePost,
-);
+postsRoutes.patch('/:id', authorize, PostsController.updatePost);
 
 /**
  * Delete Post

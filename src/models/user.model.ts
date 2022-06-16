@@ -9,7 +9,12 @@ const userSchema = new Schema<User>(
     _id: { type: String, default: uuid },
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
-    email: { type: String, required: true, unique: true, uniqueCaseInsensitive: true },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      uniqueCaseInsensitive: true,
+    },
     password: { type: String, required: true },
   },
   {
@@ -25,7 +30,11 @@ const userSchema = new Schema<User>(
   },
 );
 
-userSchema.virtual('id').get(function () { return this._id; });
-userSchema.plugin(uniqueValidator, { message: 'User with email {VALUE} already exists!' });
+userSchema.virtual('id').get(function () {
+  return this._id;
+});
+userSchema.plugin(uniqueValidator, {
+  message: 'User with email {VALUE} already exists!',
+});
 
 export const UserModel = model('User', userSchema);

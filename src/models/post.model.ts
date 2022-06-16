@@ -1,6 +1,7 @@
 import { model, Schema } from 'mongoose';
-import { Post } from '../interfaces';
 import { v4 as uuid } from 'uuid';
+
+import { Post } from '../interfaces';
 
 const postSchema = new Schema<Post>(
   {
@@ -28,6 +29,8 @@ const postSchema = new Schema<Post>(
   },
 );
 
-postSchema.virtual('id').get(function () { return this._id; });
+postSchema.virtual('id').get(function () {
+  return this._id;
+});
 
 export const PostModel = model('Post', postSchema);
