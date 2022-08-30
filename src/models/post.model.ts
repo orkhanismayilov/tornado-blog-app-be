@@ -17,7 +17,7 @@ const postSchema = new Schema<Post>(
     toJSON: {
       virtuals: true,
       transform: (_, ret) => {
-        const { _id, __v, imagePath, ...post } = ret;
+        const { _id, __v, ...post } = ret;
 
         return { ...post };
       },

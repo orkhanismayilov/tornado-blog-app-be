@@ -49,7 +49,7 @@ export class PostsController {
         title,
         content,
         author,
-        imagePath: `/images/${req.file.filename}`,
+        imagePath: `/images/${file.filename}`,
       });
       const createdPost = await post.save();
       res.status(201).json(createdPost);
