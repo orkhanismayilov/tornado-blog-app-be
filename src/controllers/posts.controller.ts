@@ -100,7 +100,7 @@ export class PostsController {
         .json({ message: 'You do not have permission to delete this post' });
     }
 
-    fs.rm(path.join(__dirname, '../../src/public', post.imagePath), err => {
+    fs.rm(path.join(__dirname, '../../public', post.imagePath), err => {
       if (err)
         console.warn(
           chalk.redBright(

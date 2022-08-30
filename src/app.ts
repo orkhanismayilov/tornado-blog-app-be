@@ -17,7 +17,7 @@ app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: false })); // for parsing application/x-www-form-urlencoded
 app.use(
   '/images',
-  express.static(path.join('src/public/images'), { maxAge: '1d' }),
+  express.static(path.join('public/images'), { maxAge: '1d' }),
 );
 
 app.use((req, res, next) => {
@@ -25,7 +25,7 @@ app.use((req, res, next) => {
   const host = req.get('host');
   process.env.FULL_URL = `${protocol}://${host}`;
 
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
+  res.setHeader('Access-Control-Allow-Origin', 'https://tornado.3031303.xyz');
   res.setHeader(
     'Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept, Authorization',
