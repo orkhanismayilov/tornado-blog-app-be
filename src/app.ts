@@ -17,14 +17,10 @@ app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: false })); // for parsing application/x-www-form-urlencoded
 app.use(
   '/images',
-  express.static(path.join('public/images'), { maxAge: '1d' }),
+  express.static(path.join('../../public/images'), { maxAge: '1d' }),
 );
 
-app.use((req, res, next) => {
-  const protocol = req.protocol;
-  const host = req.get('host');
-  process.env.FULL_URL = `${protocol}://${host}`;
-
+app.use((_, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', 'https://tornado.3031303.xyz');
   res.setHeader(
     'Access-Control-Allow-Headers',

@@ -70,8 +70,8 @@ export class PostsController {
         return res.status(400).json({ message: 'Invalid post data' });
       }
 
-      if (req.file) {
-        imagePath = `/images/${req.file.filename}`;
+      if (file) {
+        imagePath = `/images/${file.filename}`;
       }
 
       const post = await PostModel.findById(req.params.id);
@@ -83,9 +83,7 @@ export class PostsController {
 
       post.title = title;
       post.content = content;
-      post.imagePath = imagePath.includes(process.env.FULL_URL)
-        ? post.imagePath
-        : imagePath;
+      post.imagePath = file ? imagePath : post.imagePath;
       await post.save();
 
       res.json(null);
@@ -100,7 +98,7 @@ export class PostsController {
         .json({ message: 'You do not have permission to delete this post' });
     }
 
-    fs.rm(path.join(__dirname, '../../public', post.imagePath), err => {
+    fs.rm(path.join('../../public', post.imagePath), err => {
       if (err)
         console.warn(
           chalk.redBright(

@@ -17,13 +17,9 @@ const postSchema = new Schema<Post>(
     toJSON: {
       virtuals: true,
       transform: (_, ret) => {
-        const { FULL_URL } = process.env;
         const { _id, __v, imagePath, ...post } = ret;
 
-        return {
-          ...post,
-          imagePath: `${FULL_URL}${imagePath}`,
-        };
+        return { ...post };
       },
     },
   },
