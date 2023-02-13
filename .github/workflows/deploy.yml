@@ -30,7 +30,7 @@ jobs:
 
     steps:
     - name: Deploy to DigitalOcean
-      uses: appleboy/scp-action@v1
+      uses: appleboy/scp-action@latest
       with:
         host: 164.92.168.227
         username: root
@@ -39,7 +39,7 @@ jobs:
         target: /home/tornado-blog-app/tornado-blog-app-be/dist
 
     - name: Restart app
-      uses: appleboy/ssh-action@v1
+      uses: appleboy/ssh-action@latest
       with:
         host: 164.92.168.227
         username: root
