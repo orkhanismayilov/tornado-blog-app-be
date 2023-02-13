@@ -36,7 +36,7 @@ jobs:
         username: root
         key: ${{ secrets.DO_API_KEY }}
         source: ./dist/
-        target: /home/tornado-blog-app/tornado-blog-app-be/dist
+        target: /home/tornado-blog-app/tornado-blog-app-be/
         overwrite: true
 
     - name: Restart app
