@@ -22,7 +22,7 @@ jobs:
       run: npm ci
 
     - name: Build app
-      run: npm run build && ls -la ./dist/
+      run: npm run build
 
   Deploy:
     runs-on: ubuntu-latest
@@ -30,20 +30,21 @@ jobs:
 
     steps:
     - name: Deploy to DigitalOcean
-      uses: appleboy/scp-action@master
-      with:
-        host: ${{ secrets.DO_MY_APPS_HOST }}
-        username: ${{ secrets.DO_MY_APPS_USERNAME }}
-        key: ${{ secrets.DO_SSH_KEY }}
-        source: ./dist/
-        target: /home/tornado-blog-app/tornado-blog-app-be/
-        overwrite: true
+      run: ls -la ./dist/
+#       uses: appleboy/scp-action@master
+#       with:
+#         host: ${{ secrets.DO_MY_APPS_HOST }}
+#         username: ${{ secrets.DO_MY_APPS_USERNAME }}
+#         key: ${{ secrets.DO_SSH_KEY }}
+#         source: ./dist/
+#         target: /home/tornado-blog-app/tornado-blog-app-be/
+#         overwrite: true
 
-    - name: Restart app
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.DO_MY_APPS_HOST }}
-        username: ${{ secrets.DO_MY_APPS_USERNAME }}
-        key: ${{ secrets.DO_SSH_KEY }}
-        script: |
-          pm2 restart tornado-blog-app
+#     - name: Restart app
+#       uses: appleboy/ssh-action@master
+#       with:
+#         host: ${{ secrets.DO_MY_APPS_HOST }}
+#         username: ${{ secrets.DO_MY_APPS_USERNAME }}
+#         key: ${{ secrets.DO_SSH_KEY }}
+#         script: |
+#           pm2 restart tornado-blog-app || exit 1
