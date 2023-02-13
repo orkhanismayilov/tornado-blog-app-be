@@ -32,9 +32,9 @@ jobs:
     - name: Deploy to DigitalOcean
       uses: appleboy/scp-action@master
       with:
-        host: 164.92.168.227
-        username: root
-        key: ${{ secrets.DO_API_KEY }}
+        host: ${{ secrets.DO_MY_APPS_HOST }}
+        username: ${{ secrets.DO_MY_APPS_USERNAME }}
+        key: ${{ secrets.DO_SSH_KEY }}
         source: ./dist/
         target: /home/tornado-blog-app/tornado-blog-app-be/
         overwrite: true
@@ -42,8 +42,8 @@ jobs:
     - name: Restart app
       uses: appleboy/ssh-action@master
       with:
-        host: 164.92.168.227
-        username: root
-        key: ${{ secrets.DO_API_KEY }}
+        host: ${{ secrets.DO_MY_APPS_HOST }}
+        username: ${{ secrets.DO_MY_APPS_USERNAME }}
+        key: ${{ secrets.DO_SSH_KEY }}
         script: |
           pm2 restart tornado-blog-app
