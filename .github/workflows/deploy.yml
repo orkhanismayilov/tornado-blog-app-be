@@ -47,6 +47,7 @@ jobs:
        host: ${{ secrets.DO_MY_APPS_HOST }}
        username: ${{ secrets.DO_MY_APPS_USERNAME }}
        key: ${{ secrets.DO_SSH_KEY }}
+       passphrase: ${{ secrets.DO_SSH_PASSPHRASE }}
        source: ./dist/
        target: /home/tornado-blog-app/tornado-blog-app-be/
        overwrite: true
@@ -57,5 +58,6 @@ jobs:
         host: ${{ secrets.DO_MY_APPS_HOST }}
         username: ${{ secrets.DO_MY_APPS_USERNAME }}
         key: ${{ secrets.DO_SSH_KEY }}
+        passphrase: ${{ secrets.DO_SSH_PASSPHRASE }}
         script: |
           pm2 restart tornado-blog-app || exit 1
