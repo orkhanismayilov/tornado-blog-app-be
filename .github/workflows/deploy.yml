@@ -37,6 +37,7 @@ jobs:
         key: ${{ secrets.DO_API_KEY }}
         source: ./dist/
         target: /home/tornado-blog-app/tornado-blog-app-be/dist
+        overwrite: true
 
     - name: Restart app
       uses: appleboy/ssh-action@master
