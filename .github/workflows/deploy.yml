@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+  workflow_dispatch:
 
 jobs:
   Build:
@@ -23,7 +24,7 @@ jobs:
         run: npm ci
 
       - name: Prepare .env
-        run: env | grep '^TBA_' > ./src/.env
+        run: env | grep "^TBA_" > ./src/.env
 
       - name: View .env
         run: cat ./src/.env
