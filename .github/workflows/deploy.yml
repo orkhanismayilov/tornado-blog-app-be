@@ -23,7 +23,7 @@ jobs:
         run: npm ci
 
       - name: Prepare .env
-        run: secrets > ./src/.env
+        run: env | grep '^TOP_' > ./src/.env
 
       - name: View .env
         run: cat ./src/.env

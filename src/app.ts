@@ -3,11 +3,11 @@ import express from 'express';
 import mongoose from 'mongoose';
 import path from 'path';
 
-import { MONGO_DB_CONNECTION_STRING } from './config';
+import { TBA_MONGO_DB_CONNECTION_STRING } from './config';
 import { authRoutes, postsRoutes } from './routes';
 
 mongoose
-  .connect(MONGO_DB_CONNECTION_STRING)
+  .connect(TBA_MONGO_DB_CONNECTION_STRING)
   .then(() => console.log(chalk.greenBright('Connected to MongoDB')))
   .catch(() => console.warn(chalk.redBright('Connection error!')));
 
