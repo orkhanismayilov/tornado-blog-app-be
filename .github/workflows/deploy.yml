@@ -22,7 +22,7 @@ jobs:
         run: npm ci
 
       - name: Prepare .env
-        run: ls -la
+        run: cat ${{ secrets.ENV }} >> ./src/.env
 
       - name: Build app
         run: npm run build
