@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import { RequestHandler } from 'express';
 import jwt from 'jsonwebtoken';
 
-import { TBA_JWT_SECRET_KEY } from '../config';
+import { JWT_SECRET_KEY } from '../config';
 import { UserModel } from '../models';
 
 export class AuthController {
@@ -51,7 +51,7 @@ export class AuthController {
       email: user.email,
       nonce: Date.now(),
     };
-    const token = jwt.sign(tokenData, TBA_JWT_SECRET_KEY, { expiresIn: '1h' });
+    const token = jwt.sign(tokenData, JWT_SECRET_KEY, { expiresIn: '1h' });
     res.status(200).json({
       user,
       token,
