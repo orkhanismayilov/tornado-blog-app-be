@@ -36,8 +36,8 @@ jobs:
           username: ${{ secrets.DO_MY_APPS_USERNAME }}
           key: ${{ secrets.DO_SSH_KEY }}
           passphrase: ${{ secrets.DO_SSH_PASSPHRASE }}
-          script: cd /home/tornado-blog-app/tornado-blog-app-be/ |
-            npm ci && npm run build
+          script: |
+            cd /home/tornado-blog-app/tornado-blog-app-be/ && npm ci && npm run build
 
       - name: Restart App
         uses: appleboy/ssh-action@master
