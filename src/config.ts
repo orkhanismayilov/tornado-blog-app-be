@@ -6,4 +6,4 @@ if (result.error) {
   throw result.error;
 }
 
-export const { MONGO_DB_CONNECTION_STRING, JWT_SECRET_KEY, HOST, IMAGES_DIR } = result.parsed;
+export const { MONGO_DB_CONNECTION_STRING, JWT_SECRET_KEY, HOST } = result.parsed;

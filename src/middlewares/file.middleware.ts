@@ -1,8 +1,6 @@
 import multer from 'multer';
 import path from 'path';
 
-import { IMAGES_DIR } from '../config';
-
 const MIME_TYPE_MAP = new Map([
   ['image/png', 'png'],
   ['image/jpeg', 'jpg'],
@@ -15,7 +13,7 @@ const storage = multer.diskStorage({
     const error = !isValid
       ? new Error('Invalid file type! Only png, jpg, jpeg is allowed.')
       : null;
-    callback(error, path.join(IMAGES_DIR));
+    callback(error, path.join(__dirname, '../../../public/images'));
   },
   filename: (_req, file, callback) => {
     const name = file.originalname.toLowerCase().replace(/(\s|\/|\\)+/g, '-');
