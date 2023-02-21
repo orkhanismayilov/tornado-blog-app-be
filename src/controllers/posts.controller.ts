@@ -100,7 +100,7 @@ export class PostsController {
     }
 
     fs.rm(
-      path.join(__dirname, IMAGES_DIR, post.imagePath.replace('/images', '')),
+      path.join(IMAGES_DIR, post.imagePath.replace('/images', '')),
       err => {
         if (err)
           console.warn(

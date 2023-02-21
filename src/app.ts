@@ -17,7 +17,7 @@ app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: false })); // for parsing application/x-www-form-urlencoded
 app.use(
   '/images',
-  express.static(path.join(__dirname, IMAGES_DIR), { maxAge: '1d' }),
+  express.static(path.join(IMAGES_DIR), { maxAge: '1d' }),
 );
 
 app.use((_, res, next) => {

@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import path from 'path';
 
-const result = dotenv.config({ path: path.join(__dirname, '../src/.env') });
+const result = dotenv.config({ path: path.join('./src/.env') });
 if (result.error) {
   throw result.error;
 }

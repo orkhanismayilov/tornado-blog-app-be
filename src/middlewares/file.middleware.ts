@@ -15,7 +15,7 @@ const storage = multer.diskStorage({
     const error = !isValid
       ? new Error('Invalid file type! Only png, jpg, jpeg is allowed.')
       : null;
-    callback(error, path.join(__dirname, IMAGES_DIR));
+    callback(error, path.join(IMAGES_DIR));
   },
   filename: (_req, file, callback) => {
     const name = file.originalname.toLowerCase().replace(/(\s|\/|\\)+/g, '-');
