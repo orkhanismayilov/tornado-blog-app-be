@@ -3,6 +3,7 @@ import { RequestHandler } from 'express';
 import fs from 'fs';
 import path from 'path';
 
+import { IMAGES_DIR } from '../config';
 import { getFile } from '../middlewares';
 import { PostModel } from '../models';
 
@@ -98,14 +99,17 @@ export class PostsController {
         .json({ message: 'You do not have permission to delete this post' });
     }
 
-    fs.rm(path.join('../../public', post.imagePath), err => {
-      if (err)
-        console.warn(
-          chalk.redBright(
-            `Cannot delete file: ${post.imagePath}\n${err.message}`,
-          ),
-        );
-    });
+    fs.rm(
+      path.join(__dirname, IMAGES_DIR, post.imagePath.replace('/images', '')),
+      err => {
+        if (err)
+          console.warn(
+            chalk.redBright(
+              `Cannot delete file: ${post.imagePath}\n${err.message}`,
+            ),
+          );
+      },
+    );
 
     await post.delete();
     res.status(200).json(null);
