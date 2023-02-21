@@ -1,25 +1,22 @@
 {
   "compilerOptions": {
+    "target": "esnext",
     "module": "commonjs",
-    "esModuleInterop": true,
-    "target": "es6",
+    "lib": ["es2021"],
     "strict": false,
-    "noImplicitAny": true,
-    "moduleResolution": "node",
-    "sourceMap": true,
-    "typeRoots": [
-      "node_modules/@types",
-      "src/types"
-    ],
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
     "outDir": "dist",
-    "baseUrl": "",
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "baseUrl": ".",
     "paths": {
-      "*": [
-        "node_modules/*"
-      ]
-    }
+      "*": ["node_modules/*"]
+    },
+    "typeRoots": ["node_modules/@types"],
+    "resolveJsonModule": true
   },
-  "include": [
-    "src/**/*"
-  ]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

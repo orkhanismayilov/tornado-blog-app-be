@@ -3,7 +3,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import path from 'path';
 
-import { MONGO_DB_CONNECTION_STRING } from './config';
+import { HOST, IMAGES_DIR, MONGO_DB_CONNECTION_STRING } from './config';
 import { authRoutes, postsRoutes } from './routes';
 
 mongoose
@@ -17,11 +17,11 @@ app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: false })); // for parsing application/x-www-form-urlencoded
 app.use(
   '/images',
-  express.static(path.join('../../public/images'), { maxAge: '1d' }),
+  express.static(path.join(__dirname, IMAGES_DIR), { maxAge: '1d' }),
 );
 
 app.use((_, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'https://tornado.3031303.xyz');
+  res.setHeader('Access-Control-Allow-Origin', HOST);
   res.setHeader(
     'Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept, Authorization',
