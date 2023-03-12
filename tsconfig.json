@@ -12,7 +12,13 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
-      "*": ["node_modules/*"]
+      "*": ["node_modules/*"],
+      "@tba/controllers": ["src/controllers"],
+      "@tba/interfaces": ["src/interfaces"],
+      "@tba/middlewares": ["src/middlewares"],
+      "@tba/models": ["src/models"],
+      "@tba/routes": ["src/routes"],
+      "@tba/utils": ["src/utils"]
     },
     "typeRoots": ["node_modules/@types"],
     "resolveJsonModule": true

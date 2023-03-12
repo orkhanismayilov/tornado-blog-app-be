@@ -1,6 +1,6 @@
-import { Router } from 'express';
+import { AuthController } from '@tba/controllers';
 
-import { AuthController } from '../controllers';
+import { Router } from 'express';
 
 export const authRoutes = Router();
 

@@ -1,7 +1,7 @@
+import { Post } from '@tba/interfaces';
+
 import { model, Schema } from 'mongoose';
 import { v4 as uuid } from 'uuid';
-
-import { Post } from '../interfaces';
 
 const postSchema = new Schema<Post>(
   {
