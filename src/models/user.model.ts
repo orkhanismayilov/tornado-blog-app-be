@@ -1,8 +1,8 @@
+import { User } from '@tba/interfaces';
+
 import { model, Schema } from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 import { v4 as uuid } from 'uuid';
-
-import { User } from '../interfaces';
 
 const userSchema = new Schema<User>(
   {

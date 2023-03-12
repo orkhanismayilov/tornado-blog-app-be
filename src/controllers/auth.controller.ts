@@ -1,9 +1,10 @@
+import { UserModel } from '@tba/models';
+
 import bcrypt from 'bcrypt';
 import { RequestHandler } from 'express';
 import jwt from 'jsonwebtoken';
 
 import { JWT_SECRET_KEY } from '../config';
-import { UserModel } from '../models';
 
 export class AuthController {
   static signup: RequestHandler = async (req, res) => {

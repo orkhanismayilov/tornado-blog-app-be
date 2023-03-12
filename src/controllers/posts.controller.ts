@@ -1,10 +1,10 @@
+import { getFile } from '@tba/middlewares';
+import { PostModel } from '@tba/models';
+
 import chalk from 'chalk';
 import { RequestHandler } from 'express';
 import fs from 'fs';
 import path from 'path';
-
-import { getFile } from '../middlewares';
-import { PostModel } from '../models';
 
 export class PostsController {
   static getPosts: RequestHandler = async (req, res) => {
@@ -15,9 +15,7 @@ export class PostsController {
       query.skip(+limit * (+page - 1)).limit(+limit);
     }
 
-    const fetchedPosts = await query
-      .sort({ createdAt: 'desc' })
-      .populate('author');
+    const fetchedPosts = await query.sort({ createdAt: 'desc' }).populate('author');
     const count = await PostModel.count();
 
     res.json({
@@ -76,9 +74,7 @@ export class PostsController {
 
       const post = await PostModel.findById(req.params.id);
       if (post.author !== req.userData.userId) {
-        return res
-          .status(403)
-          .json({ message: 'You do not have permisson to edit this post' });
+        return res.status(403).json({ message: 'You do not have permisson to edit this post' });
       }
 
       post.title = title;
@@ -93,22 +89,12 @@ export class PostsController {
   static deletePost: RequestHandler = async (req, res) => {
     const post = await PostModel.findById(req.params.id);
     if (post.author !== req.userData.userId) {
-      return res
-        .status(403)
-        .json({ message: 'You do not have permission to delete this post' });
+      return res.status(403).json({ message: 'You do not have permission to delete this post' });
     }
 
-    fs.rm(
-      path.join(__dirname, '../../../public/images', post.imagePath.replace('/images', '')),
-      err => {
-        if (err)
-          console.warn(
-            chalk.redBright(
-              `Cannot delete file: ${post.imagePath}\n${err.message}`,
-            ),
-          );
-      },
-    );
+    fs.rm(path.join(__dirname, '../../../public/images', post.imagePath.replace('/images', '')), err => {
+      if (err) console.warn(chalk.redBright(`Cannot delete file: ${post.imagePath}\n${err.message}`));
+    });
 
     await post.delete();
     res.status(200).json(null);

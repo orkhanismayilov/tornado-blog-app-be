@@ -1,7 +1,7 @@
-import { Router } from 'express';
+import { PostsController } from '@tba/controllers';
+import { authorize } from '@tba/middlewares';
 
-import { PostsController } from '../controllers';
-import { authorize } from '../middlewares';
+import { Router } from 'express';
 
 export const postsRoutes = Router();
 
