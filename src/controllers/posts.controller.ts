@@ -1,9 +1,11 @@
+import { maxFileSize } from '@tba/constants';
 import { getFile } from '@tba/middlewares';
 import { PostModel } from '@tba/models';
 
 import chalk from 'chalk';
 import { RequestHandler } from 'express';
 import fs from 'fs';
+import { MulterError } from 'multer';
 import path from 'path';
 
 export class PostsController {
@@ -32,7 +34,12 @@ export class PostsController {
   static createPost: RequestHandler = async (req, res) => {
     getFile('image')(req, res, async err => {
       if (err instanceof Error) {
-        return res.status(400).json({ message: err.message });
+        let message = err.message;
+        if ((err as MulterError).code === 'LIMIT_FILE_SIZE') {
+          message = `Max allowed file size is ${maxFileSize}MB!`;
+        }
+
+        return res.status(400).json({ message });
       }
 
       const { title, content }: { title: string; content: string } = req.body;

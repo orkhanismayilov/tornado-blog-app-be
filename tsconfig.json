@@ -13,6 +13,7 @@
     "baseUrl": ".",
     "paths": {
       "*": ["node_modules/*"],
+      "@tba/constants": ["src/constants"],
       "@tba/controllers": ["src/controllers"],
       "@tba/interfaces": ["src/interfaces"],
       "@tba/middlewares": ["src/middlewares"],
