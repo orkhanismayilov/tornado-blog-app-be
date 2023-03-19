@@ -5,8 +5,11 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc && tsc-alias",
-    "prestart": "npm run build",
-    "start": "nodemon ."
+    "watch:tsc": "tsc -w",
+    "watch:tsc-alias": "tsc-alias -w",
+    "start:nodemon": "nodemon .",
+    "dev": "conc -k -n TSC,TSC-ALIAS,NODEMON -c bgBlue,bgCyan,bgGreen npm:watch:tsc npm:watch:tsc-alias npm:start:nodemon",
+    "start": "npm run dev"
   },
   "private": true,
   "dependencies": {
@@ -29,6 +32,7 @@
     "@types/node": "^18.13.0",
     "@types/uuid": "^9.0.0",
     "chalk": "^4.1.2",
+    "concurrently": "^7.6.0",
     "tsc-alias": "^1.8.3",
     "typescript": "^4.8.2"
   }
