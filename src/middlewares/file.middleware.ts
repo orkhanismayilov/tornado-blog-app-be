@@ -20,4 +20,8 @@ const storage = multer.diskStorage({
   },
 });
 
-export const getFile = (filePath: string) => multer({ storage, limits: { fileSize: maxFileSize } }).single(filePath);
+export const getFile = (filePath: string) =>
+  multer({
+    storage,
+    limits: { fileSize: maxFileSize * Math.pow(1024, 2) },
+  }).single(filePath);
