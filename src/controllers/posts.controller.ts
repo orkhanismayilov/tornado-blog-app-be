@@ -28,6 +28,16 @@ export class PostsController {
 
   static getPost: RequestHandler = async (req, res) => {
     const post = await PostModel.findById(req.params.id).populate('author');
+    if (+req.query.getRelated > 0) {
+      const relatedPosts = await PostModel.find({ _id: { $ne: req.params.id } }, '_id title imagePath', {
+        limit: +req.query.getRelated,
+      });
+
+      return res.json({
+        ...post.toObject(),
+        relatedPosts,
+      });
+    }
     res.json(post);
   };
 
