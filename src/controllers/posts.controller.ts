@@ -6,7 +6,7 @@ import chalk from 'chalk';
 import { RequestHandler } from 'express';
 import fs from 'fs';
 import { MulterError } from 'multer';
-import path from 'path';
+import path, { resolve } from 'path';
 
 export class PostsController {
   static getPosts: RequestHandler = async (req, res) => {
@@ -34,7 +34,7 @@ export class PostsController {
       });
 
       return res.json({
-        ...post.toObject(),
+        ...post.toJSON(),
         relatedPosts,
       });
     }
