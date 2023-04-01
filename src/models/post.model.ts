@@ -22,11 +22,14 @@ const postSchema = new Schema<Post>(
         return { ...post };
       },
     },
+    virtuals: {
+      id: {
+        get() {
+          return this._id;
+        },
+      },
+    },
   },
 );
-
-postSchema.virtual('id').get(function () {
-  return this._id;
-});
 
 export const PostModel = model('Post', postSchema);

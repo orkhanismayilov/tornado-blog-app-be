@@ -27,15 +27,26 @@ const userSchema = new Schema<User>(
         return user;
       },
     },
+    virtuals: {
+      id: {
+        get() {
+          return this._id;
+        },
+      },
+      fullName: {
+        get() {
+          return `${this.firstName.charAt(0)}. ${this.lastName}`;
+        },
+      },
+      initials: {
+        get() {
+          return `${this.firstName.charAt(0).toUpperCase()}${this.lastName.charAt(0).toUpperCase()}`;
+        },
+      },
+    },
   },
 );
 
-userSchema.virtual('id').get(function () {
-  return this._id;
-});
-userSchema.virtual('fullName').get(function () {
-  return `${this.firstName.charAt(0)}. ${this.lastName}`;
-});
 userSchema.plugin(uniqueValidator, {
   message: 'User with email {VALUE} already exists!',
 });

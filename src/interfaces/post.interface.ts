@@ -4,5 +4,4 @@ export interface Post {
   content: string;
   imagePath: string;
   author: string;
-  relatedPosts: Post[];
 }
