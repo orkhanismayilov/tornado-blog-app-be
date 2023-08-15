@@ -1,12 +1,10 @@
-import { maxFileSize } from '@tba/constants';
+import { MAX_FILE_SIZE } from '@tba/constants';
 import { getFile } from '@tba/middlewares';
 import { PostModel } from '@tba/models';
+import { deleteFile } from '@tba/utils';
 
-import chalk from 'chalk';
 import { RequestHandler } from 'express';
-import fs from 'fs';
 import { MulterError } from 'multer';
-import path, { resolve } from 'path';
 
 export class PostsController {
   static getPosts: RequestHandler = async (req, res) => {
@@ -46,7 +44,7 @@ export class PostsController {
       if (err instanceof Error) {
         let message = err.message;
         if ((err as MulterError).code === 'LIMIT_FILE_SIZE') {
-          message = `Max allowed file size is ${maxFileSize}MB!`;
+          message = `Max allowed file size is ${MAX_FILE_SIZE}MB!`;
         }
 
         return res.status(400).json({ message });
@@ -85,13 +83,14 @@ export class PostsController {
         return res.status(400).json({ message: 'Invalid post data' });
       }
 
-      if (file) {
-        imagePath = `/images/${file.filename}`;
-      }
-
       const post = await PostModel.findById(req.params.id);
       if (post.author !== req.userData.userId) {
         return res.status(403).json({ message: 'You do not have permisson to edit this post' });
+      }
+
+      if (file) {
+        imagePath = `/images/${file.filename}`;
+        deleteFile(post.imagePath.replace('/images', ''));
       }
 
       post.title = title;
@@ -109,9 +108,7 @@ export class PostsController {
       return res.status(403).json({ message: 'You do not have permission to delete this post' });
     }
 
-    fs.rm(path.join(__dirname, '../../../public/images', post.imagePath.replace('/images', '')), err => {
-      if (err) console.warn(chalk.redBright(`Cannot delete file: ${post.imagePath}\n${err.message}`));
-    });
+    deleteFile(post.imagePath.replace('/images', ''));
 
     await post.delete();
     res.status(200).json(null);

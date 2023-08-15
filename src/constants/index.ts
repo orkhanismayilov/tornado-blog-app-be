@@ -1,4 +1,4 @@
-export const mimeTypeMap = new Map([
+export const MIME_TYPE_MAP = new Map([
   ['image/png', 'png'],
   ['image/jpeg', 'jpg'],
   ['image/jpg', 'jpg'],
@@ -6,4 +6,4 @@ export const mimeTypeMap = new Map([
   ['image/svg+xml', 'svg'],
 ]);
 
-export const maxFileSize = 10;
+export const MAX_FILE_SIZE = 10;
