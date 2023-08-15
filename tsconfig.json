@@ -15,6 +15,7 @@
       "*": ["node_modules/*"],
       "@tba/constants": ["src/constants"],
       "@tba/controllers": ["src/controllers"],
+      "@tba/enums": ["src/enums"],
       "@tba/interfaces": ["src/interfaces"],
       "@tba/middlewares": ["src/middlewares"],
       "@tba/models": ["src/models"],
