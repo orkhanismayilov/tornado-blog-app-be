@@ -5,7 +5,6 @@ import { PostModel } from '@tba/models';
 import { deleteFile } from '@tba/utils';
 
 import { RequestHandler } from 'express';
-import { FilterQuery } from 'mongoose';
 import { MulterError } from 'multer';
 import slugify from 'slugify';
 import { v1 as uuidv1, validate as validateUUID } from 'uuid';
@@ -29,28 +28,23 @@ export class PostsController {
   };
 
   static getPost: RequestHandler = async (req, res) => {
-    const isUUID = validateUUID(req.params.idOrSlug);
+    const filterKey = validateUUID(req.params.idOrSlug) ? '_id' : 'slug';
 
-    let filterQuery: FilterQuery<Post> = { slug: req.params.idOrSlug };
-    if (isUUID) {
-      filterQuery = { _id: req.params.idOrSlug };
-    }
-
-    const post = await PostModel.findOne(filterQuery).populate('author');
+    const post = await PostModel.findOne({
+      [filterKey]: req.params.idOrSlug,
+    }).populate('author');
 
     if (+req.query.getRelated > 0) {
-      let relatedFilterQuery: FilterQuery<Post> = {
-        slug: { $ne: req.params.idOrSlug },
-      };
-      if (isUUID) {
-        relatedFilterQuery = {
-          id: { $ne: req.params.idOrSlug },
-        };
-      }
-
-      const relatedPosts = await PostModel.find({ slug: { $ne: req.params.slug } }, '_id title slug imagePath', {
-        limit: +req.query.getRelated,
-      });
+      const relatedPosts = await PostModel.find(
+        {
+          [filterKey]: { $ne: req.params.idOrSlug },
+        },
+        '_id title slug imagePath',
+        {
+          limit: +req.query.getRelated,
+          sort: { createdAt: 'desc' },
+        },
+      );
 
       return res.json({
         ...post.toJSON(),
