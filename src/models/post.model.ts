@@ -8,6 +8,7 @@ const postSchema = new Schema<Post>(
     _id: { type: String, default: uuid },
     title: { type: String, required: true },
     content: { type: String, required: true },
+    slug: { type: String, required: true },
     imagePath: { type: String, required: true },
     author: { type: String, ref: 'User', required: true },
   },

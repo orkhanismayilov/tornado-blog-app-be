@@ -1,10 +1,14 @@
 import { MAX_FILE_SIZE } from '@tba/constants';
+import { Post } from '@tba/interfaces';
 import { getFile } from '@tba/middlewares';
 import { PostModel } from '@tba/models';
 import { deleteFile } from '@tba/utils';
 
 import { RequestHandler } from 'express';
+import { FilterQuery } from 'mongoose';
 import { MulterError } from 'multer';
+import slugify from 'slugify';
+import { v1 as uuidv1, validate as validateUUID } from 'uuid';
 
 export class PostsController {
   static getPosts: RequestHandler = async (req, res) => {
@@ -25,9 +29,26 @@ export class PostsController {
   };
 
   static getPost: RequestHandler = async (req, res) => {
-    const post = await PostModel.findById(req.params.id).populate('author');
+    const isUUID = validateUUID(req.params.idOrSlug);
+
+    let filterQuery: FilterQuery<Post> = { slug: req.params.idOrSlug };
+    if (isUUID) {
+      filterQuery = { _id: req.params.idOrSlug };
+    }
+
+    const post = await PostModel.findOne(filterQuery).populate('author');
+
     if (+req.query.getRelated > 0) {
-      const relatedPosts = await PostModel.find({ _id: { $ne: req.params.id } }, '_id title imagePath', {
+      let relatedFilterQuery: FilterQuery<Post> = {
+        slug: { $ne: req.params.idOrSlug },
+      };
+      if (isUUID) {
+        relatedFilterQuery = {
+          id: { $ne: req.params.idOrSlug },
+        };
+      }
+
+      const relatedPosts = await PostModel.find({ slug: { $ne: req.params.slug } }, '_id title slug imagePath', {
         limit: +req.query.getRelated,
       });
 
@@ -36,6 +57,7 @@ export class PostsController {
         relatedPosts,
       });
     }
+
     res.json(post);
   };
 
@@ -50,7 +72,8 @@ export class PostsController {
         return res.status(400).json({ message });
       }
 
-      const { title, content }: { title: string; content: string } = req.body;
+      const { title, content }: Partial<Post> = req.body;
+      const slug = `${slugify(title, { lower: true })}-${uuidv1().split('-')[0]}`;
       const file = req.file;
       const author = req.userData.userId;
 
@@ -61,6 +84,7 @@ export class PostsController {
       const post = new PostModel({
         title,
         content,
+        slug,
         author,
         imagePath: `/images/${file.filename}`,
       });
@@ -75,8 +99,8 @@ export class PostsController {
         return res.status(400).json({ message: err.message });
       }
 
-      const { title, content }: { title: string; content: string } = req.body;
-      let { imagePath }: { imagePath: string } = req.body;
+      const { title, content }: Partial<Post> = req.body;
+      let { imagePath }: Partial<Post> = req.body;
       const file = req.file;
 
       if (!(title && content && (imagePath || file))) {
@@ -110,7 +134,7 @@ export class PostsController {
 
     deleteFile(post.imagePath.replace('/images', ''));
 
-    await post.delete();
+    await post.deleteOne();
     res.status(200).json(null);
   };
 }

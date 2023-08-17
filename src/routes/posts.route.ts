@@ -11,9 +11,9 @@ export const postsRoutes = Router();
 postsRoutes.get('', PostsController.getPosts);
 
 /**
- * Get Post By Id
+ * Get Post
  */
-postsRoutes.get('/:id', PostsController.getPost);
+postsRoutes.get('/:idOrSlug', PostsController.getPost);
 
 /**
  * Add Post
