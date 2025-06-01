@@ -28,11 +28,6 @@ jobs:
           target: /home/tornado-blog-app/tornado-blog-app-be/
           overwrite: true
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
-
       - name: Install Dependencies & Build
         uses: appleboy/ssh-action@master
         with:
